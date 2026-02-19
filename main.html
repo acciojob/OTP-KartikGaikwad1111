@@ -5,62 +5,66 @@
 <title>OTP Verification</title>
 
 <style>
-    body{
-        font-family: Arial, Helvetica, sans-serif;
-        background:#f4f6fb;
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-    }
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f4f4f4;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-    .container{
-        background:white;
-        padding:40px;
-        border-radius:12px;
-        text-align:center;
-        box-shadow:0 10px 25px rgba(0,0,0,0.1);
-        width:350px;
-    }
+.main-container{
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    text-align:center;
+    width:420px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
 
-    #verification_heading{
-        margin-bottom:10px;
-        font-size:28px;
-    }
+#verification_heading{
+    margin:0 0 10px 0;
+    font-size:24px;
+}
 
-    #verification_subtext{
-        color:gray;
-        margin-bottom:25px;
-    }
+#verification_subtext{
+    font-size:14px;
+    color:#666;
+    margin-bottom:30px;
+}
 
-    .code-container{
-        display:flex;
-        justify-content:space-between;
-        gap:10px;
-    }
+.code-container{
+    display:flex;
+    justify-content:space-between;
+}
 
-    .code{
-        width:45px;
-        height:55px;
-        font-size:24px;
-        text-align:center;
-        border-radius:8px;
-        border:2px solid #dcdcdc;
-        outline:none;
-    }
+.code{
+    width:50px;
+    height:60px;
+    font-size:28px;
+    text-align:center;
+    border:1px solid #ccc;
+    border-radius:5px;
+    outline:none;
+}
 
-    .code:focus{
-        border-color:#4a7cff;
-        box-shadow:0 0 5px rgba(74,124,255,0.5);
-    }
+.code:focus{
+    border-color:#4a90e2;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1 id="verification_heading">Verify Your Account</h1>
-    <p id="verification_subtext">Enter the 6 digit OTP sent to your email</p>
+<div class="main-container">
+
+    <h2 id="verification_heading">Verify Your Account</h2>
+
+    <p id="verification_subtext">
+        We emailed you the six digit code. Enter the code below to confirm your email address.
+    </p>
 
     <div class="code-container">
         <input type="text" maxlength="1" class="code">
@@ -70,38 +74,48 @@
         <input type="text" maxlength="1" class="code">
         <input type="text" maxlength="1" class="code">
     </div>
+
 </div>
 
 <script>
+
 const codes = document.querySelectorAll(".code");
 
-// Focus first box on load
+// Focus first input on load
 codes[0].focus();
 
-codes.forEach((code, index) => {
+codes.forEach((input, index) => {
 
-    code.addEventListener("input", (e) => {
-        // Allow only numbers
-        e.target.value = e.target.value.replace(/[^0-9]/g,'');
+    // Handle typing forward
+    input.addEventListener("input", (e) => {
+        let value = e.target.value;
 
-        // Move forward automatically
-        if(code.value && index < codes.length - 1){
+        // Allow only digits
+        value = value.replace(/[^0-9]/g, '');
+        input.value = value;
+
+        if(value !== '' && index < codes.length - 1){
             codes[index + 1].focus();
         }
     });
 
-    code.addEventListener("keydown", (e) => {
+    // Handle backspace
+    input.addEventListener("keydown", (e) => {
+
         if(e.key === "Backspace"){
-            // If current empty → move back
-            if(code.value === "" && index > 0){
+
+            if(input.value === '' && index > 0){
                 codes[index - 1].focus();
             }
-            // Clear current value
-            code.value = "";
+
+            // Clear current field
+            input.value = '';
         }
+
     });
 
 });
+
 </script>
 
 </body>
